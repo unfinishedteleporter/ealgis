@@ -1,6 +1,10 @@
 node default {
     class { 'apt': }
 
+    package {'vim':
+	ensure => 'installed',
+    }
+
     apt::ppa { 'ppa:ubuntugis/ppa':
     }
 
@@ -9,6 +13,9 @@ node default {
       require => [ Apt::Ppa["ppa:ubuntugis/ppa"], Package["postgresql-server"] ], 
     }
 
+    user {'postgres':
+	ensure => 'present',
+    } ->
     class { 'postgresql::globals':
       manage_package_repo => true,
       version             => '9.3',
